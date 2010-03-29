@@ -80,7 +80,7 @@ module Winnower
           filter.active = true
           operator = data[:operators][name].to_sym
           filter.operator = operator if filter.operators.include?(operator)
-          filter.value = data[:values][name]
+          filter.value = data[:values][name] unless operator == :blank
         end
       end
       validate
