@@ -3,7 +3,7 @@ require 'winnower'
 class TestFilters < Winnower::Filters
 
   def filters
-    filter :text, "Customer Name", "customers.name", :active => true, :value => 'Bob'
+    filter :text, "Customer Name", "customers.name"
     filter :select, "Customer Type", "customers.name", :choices => %w(Customer Prospect Lead) + ("A".."Z").to_a
     filter :date, "Customer Since", "customers.since"
     filter :check_boxes, "Never had Job of Type", "foo", :choices => [['HVAC', '1'], ['Electrical', 2], ['Plumbing', 3]]

@@ -100,18 +100,31 @@ module Winnower
     # options:
     #   :div = hash of html options for outer div
     def html(options = {})
-      @html_options = options.symbolize_keys.reverse_merge(:div => {:id => "filters"}, :legend => "Filters")
+      @html_options = options.symbolize_keys.reverse_merge(:div => {:id => "filters"})
       @html_options[:div] ||= {}
       @html_options[:dom_prefix] ||= @html_options[:div][:id] || "filters"
       @html_options[:name_prefix] ||= "filters"
       div_options = (@html_options[:div] || {}).reverse_merge(:class => "winnower")
-      content_tag :div, [html_fieldset, html_errors].join, div_options
+      content_tag :div, [html_toggler, html_fieldset, html_errors].join, div_options
+    end
+
+    # returns HTML for the fieldset toggler
+    def html_toggler
+      content_tag(:div, 
+        link_to_function('Filters &raquo;', "$('#{dom_id('toggler')}').hide();$('#{dom_id('fieldset')}').show()"),
+        :id => dom_id('toggler'), :style => "display:#{errors.present? ? 'none' : 'block'}")
+    end
+
+    # returns HTML for the fieldset legend
+    def html_legend
+      content_tag(:legend, 
+        link_to_function('Filters &laquo;', "$('#{dom_id('fieldset')}').hide();$('#{dom_id('toggler')}').show()"))
     end
 
     # returns HTML for the fieldset containing the filters
     def html_fieldset
       content_tag(:fieldset,
-        (@html_options[:legend] ? content_tag(:legend, h(@html_options[:legend])) : '') <<
+        html_legend <<
         content_tag(:table, 
           content_tag(:tr,
             content_tag(:td, html_filters) <<
@@ -119,8 +132,8 @@ module Winnower
           :valign => "top"),
         :width => "100%") <<
         html_controls <<
-        javascript_tag(active_filters.collect(&:js_value_settle).join(";"))
-      )
+        javascript_tag(active_filters.collect(&:js_value_settle).join(";")),
+      :id => dom_id('fieldset'), :style => "display:#{errors.present? ? 'block' : 'none'}")
     end
 
     def html_filters
