@@ -8,6 +8,7 @@ class TestFilters < Winnower::Filters
     filter :date, "Customer Since", "customers.since"
     filter :check_boxes, "Never had Job of Type", "foo", :choices => [['HVAC', '1'], ['Electrical', 2], ['Plumbing', 3]]
     filter :boolean, "Commercial?", "customers.commercial"
+    filter :radio_buttons, "Sex", "customers.sex", :choices => [['Male', 'm'], ['Female', 'f']]
   end
 
 end

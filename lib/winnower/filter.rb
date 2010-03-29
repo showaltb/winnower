@@ -218,7 +218,7 @@ module Winnower
 
     def validate
       @error = @condition = nil
-      return @active = false if value.nil?
+      return @error = 'Please select a value' if value.nil? && operator != :blank
       @condition = case operator
       when :is
         ["#{field} in (?)", value]
@@ -230,7 +230,7 @@ module Winnower
     end
 
     def html_value
-      multiple = Array(value).size > 1
+      multiple = Array(value).size != 1
       choices = stringified_choices
       size = multiple ? [choices.size, 7].min : 1
       select_tag(input_name(:values, true), options_for_select(options[:choices], value), :id => dom_id(:value), :multiple => multiple, :size => size, :style => "vertical-align: top") + ' ' +
@@ -300,7 +300,14 @@ module Winnower
 
   end
 
-  class RadioButtonsFilter < Filter
+  class RadioButtonsFilter < SelectFilter
+
+    def html_value
+      stringified_choices.collect do |text, val|
+        val ||= text
+        "#{radio_button_tag(input_name(:values), val, value.to_s == val)} #{h text} &nbsp; "
+      end.join
+    end
 
   end
 
