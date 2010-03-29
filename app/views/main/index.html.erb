@@ -1,0 +1,26 @@
+<h1>Winnower Test</h1>
+
+<% form_tag do %>
+<%= @filters.html(:div => {:id => 'filters', :class => 'filters'}) %>
+<% end %>
+
+<% if request.post? %>
+<p>params.to_yaml:</p>
+<pre><%= h params.to_yaml %></pre>
+<%end%>
+
+<br/><br/>
+<p>@filters.valid?</p>
+<tt><%= h @filters.valid?.inspect %></tt>
+
+<br/><br/>
+<p>@filters.to_query:</p>
+<tt><%= h @filters.to_query.inspect %></tt>
+
+<br/><br/>
+<p>@filters.conditions:</p>
+<tt><%= h @filters.conditions.inspect %></tt>
+
+<br/><br/>
+<p>@filters.to_yaml:</p>
+<pre><%= h @filters.to_yaml %></pre>

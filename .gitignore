@@ -1,0 +1,7 @@
+bob*
+/doc/app
+/log/[^.]*
+/tmp/[^.]*
+*.swp
+*~
+/db/*.sqlite3
